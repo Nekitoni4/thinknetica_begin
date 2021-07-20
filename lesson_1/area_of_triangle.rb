@@ -1,6 +1,6 @@
 puts "Input plz base of triangle, sir:"
-baseOfTriangle = gets.chomp.to_i
+base_of_triangle = gets.to_i
 puts "Input plz height of triangle, sir:"
-heightOfTriangle = gets.chomp.to_i
-areaOfTriangle = 0.5 * baseOfTriangle * heightOfTriangle
-puts "The area of the triangle is #{areaOfTriangle}"
+height_of_triangle = gets.to_i
+area_of_triangle = 0.5 * base_of_triangle * height_of_triangle
+puts "The area of the triangle is #{area_of_triangle}"

@@ -1,34 +1,37 @@
 puts "Input first side of triangle, sir:"
-a = gets.chomp.to_i
+a = gets.to_i
 puts "Input second side of triangle, sir:"
-b = gets.chomp.to_i
+b = gets.to_i
 puts "Input third side of triangle, sir:"
-c = gets.chomp.to_i
+c = gets.to_i
 
-triangleIsEquilateral = a == b && b == c && c == a
 
-triangleIsIsosceles = (a == b) || (b == c) || (c == a)
+triangle_is_equilateral = a == b && b == c && c == a
+triangle_is_isosceles = (a == b) || (b == c) || (c == a)
+triangle_is_rectangular = nil
 
-triangleIsRectangular = nil
 
-if a > b && a > c
-  hypotenuseOfTriangle = a
-  triangleIsRectangular = hypotenuseOfTriangle ** 2 == b ** 2 + c ** 2
-elsif b > a && b > c
-  hypotenuseOfTriangle = b
-  triangleIsRectangular = hypotenuseOfTriangle ** 2 == a ** 2 + c ** 2
-elsif c > a && c > b
-  hypotenuseOfTriangle = c
-  triangleIsRectangular = hypotenuseOfTriangle ** 2 == a ** 2 + b ** 2
-else 
-  hypotenuseOfTriangle = false
+# The first condition is not to do unnecessary calculations
+# 
+if !triangle_is_equilateral && !triangle_is_isosceles
+  hypotenuse_of_triangle = [a, b, c].max
+  if a > b && a > c
+    triangle_is_rectangular = hypotenuse_of_triangle ** 2 == b ** 2 + c ** 2
+  elsif b > a && b > c
+    triangle_is_rectangular = h ** 2 == a ** 2 + c ** 2
+  elsif c > a && c > b
+    triangle_is_rectangular = hypotenuse_of_triangle ** 2 == a ** 2 + b ** 2
+  else 
+   hypotenuse_of_triangle = false
+  end
 end
 
-if triangleIsEquilateral
+
+if triangle_is_equilateral
   puts "Triangle is equilateral"
-elsif triangleIsIsosceles
+elsif triangle_is_isosceles
   puts "Triangle is isosceles"
-elsif triangleIsRectangular
+elsif triangle_is_rectangular
   puts "Triangle is rectangular"
 else 
   puts "Oops, something went wrong"
