@@ -31,6 +31,4 @@ elsif triangle_is_isosceles
   puts "Triangle is isosceles"
 elsif triangle_is_rectangular
   puts "Triangle is rectangular"
-else 
-  puts "Oops, something went wrong"
 end
