@@ -8,7 +8,7 @@ c = gets.to_i
 
 triangle_is_equilateral = a == b && b == c && c == a
 triangle_is_isosceles = (a == b) || (b == c) || (c == a)
-triangle_is_rectangular = nil
+triangle_is_rectangular = false
 
 
 # The first condition is not to do unnecessary calculations
@@ -16,13 +16,11 @@ triangle_is_rectangular = nil
 if !triangle_is_equilateral && !triangle_is_isosceles
   hypotenuse_of_triangle = [a, b, c].max
   if a > b && a > c
-    triangle_is_rectangular = hypotenuse_of_triangle ** 2 == b ** 2 + c ** 2
+    triangle_is_rectangular = hypotenuse_of_triangle**2 == b**2 + c**2
   elsif b > a && b > c
-    triangle_is_rectangular = h ** 2 == a ** 2 + c ** 2
+    triangle_is_rectangular = hypotenuse_of_triangle**2 == a**2 + c**2
   elsif c > a && c > b
-    triangle_is_rectangular = hypotenuse_of_triangle ** 2 == a ** 2 + b ** 2
-  else 
-   hypotenuse_of_triangle = false
+    triangle_is_rectangular = hypotenuse_of_triangle**2 == a**2 + b**2
   end
 end
 
