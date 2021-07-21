@@ -1,4 +1,4 @@
-products_data = Hash.new
+products_data = {}
 
 loop do 
   puts "Sir, plz, input product name:"
