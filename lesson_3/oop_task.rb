@@ -1,9 +1,9 @@
 class Station
-  attr_reader :name, :trains_at_the_moment
+  attr_reader :name, :trains
 
   def initialize(name)
     @name = name
-    @trains_at_the_moment = []
+    @trains = []
   end
 
   def trains_by_type(type)
@@ -15,18 +15,16 @@ class Station
   end
 
   def train_existing?(train)
-    self.trains_at_the_moment.find { |existing_train| existing_train.object_id == train.object_id }.nil? ? false : true
+    self.trains.include(train)
   end
 
   def train_departure(train)
-    self.trains_at_the_moment.delete(train) if train_existing?(train)
+    self.trains.delete(train) if train_existing?(train)
   end
 
   def add_train(train)
-    self.trains_at_the_moment.push(train) unless train_existing?(train)
+    self.trains.push(train) unless train_existing?(train)
   end
-
-  # We have a trains_at_the_moment getter so we don't need a separate method for showing trains at the moment.
 end
 
 
@@ -40,7 +38,7 @@ class Route
   end
 
   def station_existing?(station)
-    get_all_stations.find { |existing_station| existing_station.object_id == station.object_id }.nil? ? false : true
+    get_all_stations.include?(station)
   end
 
   def add_intermidate_station(station)
@@ -73,18 +71,6 @@ class Train
     set_current_station(route.starting_station)
     set_train_on_the_current_station
   end
-
-  def set_route(route)
-    @route = route
-  end
-
-  def set_current_station(station)
-    @current_station = station
-  end
-
-  def set_train_on_the_current_station
-    self.current_station.add_train(self)
-  end
   
   def acceleration(speed)
     self.speed = speed if speed > self.speed
@@ -95,15 +81,11 @@ class Train
   end
 
   def add_car
-    if self.speed == 0
-      self.count_cars += 1
-    end
+    self.count_cars += 1 if self.speed == 0
   end
 
   def uncoupling_car
-    if self.speed == 0
-      self.count_cars -= 1
-    end
+    self.count_cars -= 1 if self.speed == 0
   end
 
   def get_current_station_position
@@ -114,36 +96,42 @@ class Train
     self.route.get_all_stations
   end
 
-  def get_closest_stations
-    { prev_station: self.get_all_stations_in_this_route[get_current_station_position - 1], 
-    next_station: self.get_all_stations_in_this_route[get_current_station_position + 1] }
+  def get_previous_station
+    return unless get_current_station_position == 0
+    self.get_all_stations_in_this_route[get_current_station_position - 1]
+  end
+
+  def get_next_station
+    return if get_current_station_position != get_all_stations_in_this_route.length - 1
+    self.get_all_stations_in_this_route[get_current_station_position + 1]
   end
 
   def move_backward
     if get_current_station_position != 0
-      self.current_station = get_closest_stations[:prev_station]
+      self.current_station = get_previous_station
       self.current_station.add_train(self)
     end
   end
 
   def move_forward
     if get_current_station_position != get_all_stations_in_this_route.length - 1
-      self.current_station = get_closest_stations[:next_station]
+      self.current_station = get_next_station
       self.current_station.add_train(self)
     end
   end
 
-  def get_previous_station
-    if get_current_station_position != 0
-      get_closest_stations[:prev_station]
-    end
-  end
+  # Прочитал в stackoverflow, что 4 пробела после модификатора доступа позволяют более удобочитаемее код делать)
+  private 
 
-  def get_next_station
-    if get_current_station_position != get_all_stations_in_this_route.length - 1
-      get_closest_stations[:next_station]
-    end
-  end
+      def set_route(route)
+        @route = route
+      end
 
-  private :set_route, :set_current_station, :set_train_on_the_current_station
+      def set_current_station(station)
+        @current_station = station
+      end
+
+      def set_train_on_the_current_station
+        self.current_station.add_train(self)
+      end
 end
