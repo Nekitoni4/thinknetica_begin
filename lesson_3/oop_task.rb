@@ -9,7 +9,7 @@ class Station
   def get_trains_by_type
     passengers_trains = 0
     freight_trains = 0
-    @trains.each do |train|
+    self.trains.each do |train|
       case train.type.downcase
       when "passengers" then passengers_trains += 1
       when "freight" then freight_trains += 1
