@@ -7,7 +7,7 @@ class Station
   end
 
   def trains_by_type(type)
-    self.trains.find_all { |train| train.type == type}
+    self.trains.find_all { |train| train.type == type }
   end
 
   def count_trains_by_type(type)
@@ -15,7 +15,7 @@ class Station
   end
 
   def train_existing?(train)
-    self.trains.include(train)
+    self.trains.include?(train)
   end
 
   def train_departure(train)
@@ -38,7 +38,7 @@ class Route
   end
 
   def station_existing?(station)
-    get_all_stations.include?(station)
+    all_stations.include?(station)
   end
 
   def add_intermidate_station(station)
@@ -49,7 +49,7 @@ class Route
     self.intermidate_stations.delete(station) if station_existing?(station)
   end
 
-  def get_all_stations
+  def all_stations
     [self.starting_station, *self.intermidate_stations, self.end_station]
   end
 end
@@ -88,50 +88,47 @@ class Train
     self.count_cars -= 1 if self.speed == 0
   end
 
-  def get_current_station_position
-    get_all_stations.index(self.current_station)
+  def all_stations_in_this_route
+    self.route.all_stations
   end
 
-  def get_all_stations_in_this_route
-    self.route.get_all_stations
+  def current_station_position
+    all_stations_in_this_route.index(self.current_station)
   end
 
-  def get_previous_station
-    return unless get_current_station_position == 0
-    self.get_all_stations_in_this_route[get_current_station_position - 1]
+  def previous_station
+    self.all_stations_in_this_route[current_station_position - 1] unless current_station_position == 0
   end
 
-  def get_next_station
-    return if get_current_station_position != get_all_stations_in_this_route.length - 1
-    self.get_all_stations_in_this_route[get_current_station_position + 1]
+  def next_station
+    self.all_stations_in_this_route[current_station_position + 1] if current_station_position != all_stations_in_this_route.length - 1
   end
 
   def move_backward
-    if get_current_station_position != 0
-      self.current_station = get_previous_station
-      self.current_station.add_train(self)
+    if previous_station
+    self.current_station = previous_station
+    self.current_station.add_train(self)
     end
   end
 
   def move_forward
-    if get_current_station_position != get_all_stations_in_this_route.length - 1
-      self.current_station = get_next_station
-      self.current_station.add_train(self)
+    if next_station
+    self.current_station = next_station
+    self.current_station.add_train(self)
     end
   end
 
-  # Прочитал в stackoverflow, что 4 пробела после модификатора доступа позволяют более удобочитаемее код делать)
   private 
 
-      def set_route(route)
+    def set_route(route)
         @route = route
-      end
+    end
 
-      def set_current_station(station)
-        @current_station = station
-      end
+    def set_current_station(station)
+      @current_station = station
+    end
 
-      def set_train_on_the_current_station
-        self.current_station.add_train(self)
-      end
+    def set_train_on_the_current_station
+      self.current_station.add_train(self)
+    end
 end
