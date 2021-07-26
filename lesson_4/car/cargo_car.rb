@@ -1,7 +1,8 @@
-require_relative "train_car.rb"
-
 class CargoCar < TrainCar
-  def log
-    puts "This is cargo"
+
+  CAR_TYPE = "cargo"
+
+  def initialize
+    super(CAR_TYPE)
   end
 end

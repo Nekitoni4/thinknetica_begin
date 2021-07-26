@@ -1,5 +1,4 @@
 class CargoTrain < Train
-
   TRAIN_TYPE = "cargo"
 
   def initialize(name)
@@ -7,6 +6,6 @@ class CargoTrain < Train
   end
 
   def add_car(car)
-    super(car) if car.kind_of? CargoCar
+    super(car) if car.type.eql? "cargo"
   end
 end

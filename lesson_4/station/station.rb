@@ -11,15 +11,15 @@ class Station
   end
 
   def train_existing?(train)
-    self.trains.include?(train) && train.kind_of(Train)
+    self.trains.include?(train)
   end
 
   def train_departure(train)
-    self.trains.delete(train) if train_existing?(train) && train.kind_of?(Train)
+    self.trains.delete(train) if train_existing?(train)
   end
 
   def add_train(train)
-    self.trains.push(train) unless train_existing?(train) && train.kind_of?(Train)
+    self.trains.push(train) unless train_existing?(train)
   end
 
   def show_all_trains

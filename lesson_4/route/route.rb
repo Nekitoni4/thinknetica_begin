@@ -8,11 +8,11 @@ class Route
   end
 
   def add_intermidate_station(station)
-    self.intermidate_stations.push(station) unless station_existing?(station) && station.kind_of(Station)
+    self.intermidate_stations.push(station) unless station_existing?(station)
   end
 
   def delete_intermidate_station(station)
-    self.intermidate_stations.delete(station) if station_existing?(station) && station.kind_of(Station)
+    self.intermidate_stations.delete(station) if station_existing?(station)
   end
 
   def all_stations
