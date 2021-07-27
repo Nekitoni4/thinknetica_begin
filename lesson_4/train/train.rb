@@ -24,7 +24,7 @@ class Train
   end
 
   def add_car(car)
-    self.cars.push(car)
+    self.cars.push(car) if self.type.eql? car.type; 
   end
 
   def uncoupling_car
