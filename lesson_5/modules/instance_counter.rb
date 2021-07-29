@@ -21,7 +21,6 @@ module InstanceCounter
     end
 
     private def register_instance
-      puts self.class
       self.class.count += 1
     end
   end
