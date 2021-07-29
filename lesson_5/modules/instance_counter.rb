@@ -1,7 +1,5 @@
 module InstanceCounter
 
-  attr_accessor :count
-
   def self.included(klass)
     klass.extend ClassMethods
     klass.include InstanceMethods
