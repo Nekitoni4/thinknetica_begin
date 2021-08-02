@@ -9,9 +9,9 @@ class Station
   @@station_storage = []
 
   def initialize(name)
-    validate!(name)
     @name = name
     @trains = []
+    validate!
     self.class.send :save_station, self
     self.accounting_instances
   end
@@ -55,11 +55,11 @@ class Station
 
   protected
 
-  def validate!(name)
-    validate_name(name)
+  def validate!
+    validate_name!
   end
 
-  def validate_name!(name)
-    raise if name.length < 5
+  def validate_name!
+    raise if self.name.length < 10
   end
 end

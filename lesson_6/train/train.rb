@@ -12,11 +12,11 @@ class Train
   attr_accessor :count_cars, :speed, :current_station, :route, :cars
 
   def initialize(number_name = "test_train_number", type)
-    validate!(number_name, type)
     @number_name = number_name
     @type = type
     @cars = []
     @speed = 0
+    validate!
     self.class.send :save_train, self
     self.accounting_instances
   end
@@ -77,9 +77,9 @@ class Train
     current_station_position == all_stations_in_this_route.length - 1
   end
 
-  def valid?(number_name, type)
-    validate_number_name!(number_name)
-    validate_type!(type)
+  def valid?
+    validate_number_name!
+    validate_type!
     true
   rescue
     false
@@ -94,17 +94,17 @@ class Train
 
   protected
 
-  def validate!(number_name, type)
-    validate_number_name!(number_name)
-    validate_type!(type)
+  def validate!
+    validate_number_name!
+    validate_type!
   end
 
-  def validate_number_name!(number_name)
-    raise unless /^[a-z0-9]{3}-*[a-z0-9]{2}/.match?(number_name)
+  def validate_number_name!
+    raise unless /^[a-z0-9]{3}-*[a-z0-9]{2}/.match?(self.number_name)
   end
 
-  def validate_type!(type)
-    raise if type.length < 5
+  def validate_type!
+    raise if self.type.length < 5
   end
   
   private

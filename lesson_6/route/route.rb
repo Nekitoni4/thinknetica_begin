@@ -6,7 +6,6 @@ class Route
   attr_reader :starting_station, :end_station, :intermidate_stations
 
   def initialize(starting_station, end_station)
-    # Сюда должны передаваться объекты, поэтому смысла от валидации особого не вижу
     @starting_station = starting_station
     @end_station = end_station
     @intermidate_stations = []
