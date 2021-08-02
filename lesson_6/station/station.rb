@@ -9,7 +9,7 @@ class Station
   @@station_storage = []
 
   def initialize(name)
-    raise 'Некорректно переданное имя' unless valid?(name)
+    validate!(name)
     @name = name
     @trains = []
     self.class.send :save_station, self
@@ -55,7 +55,11 @@ class Station
 
   protected
 
-  def validate(name)
+  def validate!(name)
+    validate_name(name)
+  end
+
+  def validate_name!(name)
     raise if name.length < 5
   end
 end

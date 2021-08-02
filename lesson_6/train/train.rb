@@ -12,7 +12,7 @@ class Train
   attr_accessor :count_cars, :speed, :current_station, :route, :cars
 
   def initialize(number_name = "test_train_number", type)
-    raise 'Некорректный номер поезда или тип' unless valid?(number_name, type)
+    validate!(number_name, type)
     @number_name = number_name
     @type = type
     @cars = []
@@ -78,8 +78,8 @@ class Train
   end
 
   def valid?(number_name, type)
-    validate_number_name(number_name)
-    validate_type(type)
+    validate_number_name!(number_name)
+    validate_type!(type)
     true
   rescue
     false
@@ -94,11 +94,16 @@ class Train
 
   protected
 
-  def validate_number_name(number_name)
+  def validate!(number_name, type)
+    validate_number_name!(number_name)
+    validate_type!(type)
+  end
+
+  def validate_number_name!(number_name)
     raise unless /^[a-z0-9]{3}-*[a-z0-9]{2}/.match?(number_name)
   end
 
-  def validate_type(type)
+  def validate_type!(type)
     raise if type.length < 5
   end
   

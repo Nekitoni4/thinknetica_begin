@@ -7,6 +7,7 @@ class TrainCar
   attr_reader :type
 
   def initialize(type)
+    validate!(type)
     raise 'Передайте, пожалуйста, валидный тип вагона' unless valid?(type)
     @type = type
   end
@@ -20,7 +21,11 @@ class TrainCar
 
   protected
 
-  def validate(type)
+  def validate!(type)
+    validate_type!(type)
+  end
+
+  def validate_type!(type)
     raise if type.length < 10
   end
 end
