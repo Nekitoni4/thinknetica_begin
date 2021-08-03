@@ -7,7 +7,7 @@ module InstanceCounter
 
   module ClassMethods
 
-
+    
     def self.extended(klass)
       class << klass
         attr_accessor :count
@@ -25,6 +25,7 @@ module InstanceCounter
     end
 
     private def register_instance
+      self.class.count ||= 0
       self.class.count += 1
     end
   end
