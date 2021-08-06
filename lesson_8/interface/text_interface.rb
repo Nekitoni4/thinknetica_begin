@@ -36,7 +36,6 @@ class TextInterface
       5 => -> { SetRouteInterface.run!(trains, routes) },
       6 => -> { CarsActionInterface.run!(trains) }, 7 => -> { ManageRouteInterface.run!(routes, stations) },
       8 => -> { ShowStationsInterface.run!(stations) }, 9 => -> { FillCarInterface.run!(trains) }
-
     }
     actions[user_action] ? actions[user_action].call : puts('Некорректный индекс')
   end
