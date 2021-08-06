@@ -25,10 +25,10 @@ class Train
     @@train_storage.detect { |train| train.number_name == train_number}
   end
 
-  def set_train_on_the_way(route)
-    set_route(route)
-    set_current_station(route.starting_station)
-    set_train_on_the_current_station
+  def train_on_the_way(route)
+    init_route(route)
+    init_current_station(route.starting_station)
+    add_train_to_current_station
   end
   
   def acceleration(speed)
@@ -117,15 +117,15 @@ class Train
     all_stations_in_this_route.index(self.current_station)
   end
 
-  def set_route(route)
+  def init_route(route)
     @route = route
   end
 
-  def set_current_station(station)
+  def init_current_station(station)
     @current_station = station
   end
 
-  def set_train_on_the_current_station
+  def add_train_to_current_station
     self.current_station.add_train(self)
   end
 end

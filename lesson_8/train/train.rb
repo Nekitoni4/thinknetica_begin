@@ -1,28 +1,33 @@
+# frozen_string_literal: true
+
 require_relative '../modules/manufacture_company'
 require_relative '../modules/instance_counter'
 
 class Train
-
   include ManufactureCompany
   include InstanceCounter
 
-  @@train_storage = []
+  class << self
+    @train_storage = []
+
+    attr_accessor :train_storage
+  end
 
   attr_reader :number_name, :type
   attr_accessor :count_cars, :speed, :current_station, :route, :cars
 
-  def initialize(number_name = "test_train_number", type)
+  def initialize(type, number_name = 'test_train_number')
     @number_name = number_name
     @type = type
     @cars = []
     @speed = 0
     validate!
     self.class.send :save_train, self
-    self.accounting_instances
+    accounting_instances
   end
 
   def self.find(train_number)
-    @@train_storage.detect { |train| train.number_name == train_number}
+    train_storage.detect { |train| train.number_name == train_number }
   end
 
   def train_on_the_way(route)
@@ -30,7 +35,7 @@ class Train
     init_current_station(route.starting_station)
     add_train_to_current_station
   end
-  
+
   def acceleration(speed)
     self.speed = speed if speed > self.speed
   end
@@ -40,37 +45,31 @@ class Train
   end
 
   def add_car(car)
-    self.cars.push(car) if self.type.eql? car.type; 
+    cars.push(car) if type.eql? car.type
   end
 
   def uncoupling_car
-    self.cars.pop
+    cars.pop
   end
 
   def previous_station
-    self.all_stations_in_this_route[current_station_position - 1] unless start_station?
+    all_stations_in_this_route[current_station_position - 1] unless start_station?
   end
 
   def next_station
-    self.all_stations_in_this_route[current_station_position + 1] unless end_station?
+    all_stations_in_this_route[current_station_position + 1] unless end_station?
   end
 
   def move_backward
-    if previous_station
-    self.current_station = previous_station
-    self.current_station.add_train(self)
-    end
+    current_station.add_train(self) if (self.current_station = previous_station)
   end
 
   def move_forward
-    if next_station
-    self.current_station = next_station
-    self.current_station.add_train(self)
-    end
+    current_station.add_train(self) if (self.current_station = next_station)
   end
 
   def start_station?
-    current_station_position == 0
+    current_station_position.zero?
   end
 
   def end_station?
@@ -78,36 +77,26 @@ class Train
   end
 
   def valid?
-    validate_number_name!
-    validate_type!
-    true
-  rescue
+    true if validate_number_name! && validate_type!
+  rescue StandardError
     false
   end
 
-
-  def each_car
-    self.cars.each { |car| yield car }
+  def each_car(&block)
+    cars.each(&block)
   end
 
-  def each_car_index
-    index = 0
-    self.cars.each do |car|
-      yield(car, index)
-      ++index
-    end
+  def each_car_index(&block)
+    cars.each_index(&block)
   end
 
   def number_cars
-    self.cars.length
+    cars.length
   end
 
-
-  private_class_method
-
-    def self.save_train(instance)
-      @@train_storage << instance
-    end
+  def self.save_train(instance)
+    train_storage << instance
+  end
 
   protected
 
@@ -117,21 +106,21 @@ class Train
   end
 
   def validate_number_name!
-    raise 'Неверный формат имени поезда' unless /^[a-z0-9]{3}-*[a-z0-9]{2}/.match?(self.number_name)
+    raise 'Неверный формат имени поезда' unless /^[a-z0-9]{3}-*[a-z0-9]{2}/.match?(number_name)
   end
 
   def validate_type!
-    raise 'Длина названия типа поезда меньше 5 символов' if self.type.length < 5
+    raise 'Длина названия типа поезда меньше 5 символов' if type.length < 5
   end
-  
+
   private
 
   def all_stations_in_this_route
-    self.route.all_stations
+    route.all_stations
   end
 
   def current_station_position
-    all_stations_in_this_route.index(self.current_station)
+    all_stations_in_this_route.index(current_station)
   end
 
   def init_route(route)
@@ -143,7 +132,6 @@ class Train
   end
 
   def add_train_to_current_station
-    self.current_station.add_train(self)
+    current_station.add_train(self)
   end
 end
-

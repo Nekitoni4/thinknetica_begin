@@ -152,7 +152,7 @@ class TextInterface
         show_all_routes
         current_route_number = gets.to_i - 1
         break if current_route_number == -1
-        if route_index_existing_in_storage?(current_route_number)
+        if route_existing_in_storage?(current_route_number)
           self.selected_route = self.routes[current_route_number]
           action_with_station_in_route_interaction
         else
@@ -186,7 +186,7 @@ class TextInterface
       puts "Пожалуйста, выберите станцию, которую вы хотите добавить из текущего списка"
       show_all_stations
       current_station_number = gets.to_i - 1
-      if station_index_existing_in_storage?(current_station_number)
+      if station_existing_in_storage?(current_station_number)
         self.selected_route.add_intermidate_station(self.stations[current_station_number])
         puts "Станция успешно добавлена!"
       else
@@ -223,7 +223,7 @@ class TextInterface
         show_all_trains
         current_train_index = gets.to_i - 1
         break if current_train_index == -1
-        if train_index_existing_in_storage?(current_train_index)
+        if train_existing_in_storage?(current_train_index)
           self.selected_train = self.trains[current_train_index]
           puts "Поезд успешно выбран!"
           set_route_to_selected_train_interaction
@@ -242,8 +242,8 @@ class TextInterface
       puts "Выберите, пожалуйста, нужный маршрут из списка предложенных"
       show_all_routes
       selected_route_index = gets.to_i - 1
-      if route_index_existing_in_storage?(selected_route_index)
-        self.selected_train.set_train_on_the_way(self.routes[selected_route_index])
+      if route_existing_in_storage?(selected_route_index)
+        self.selected_train.train_on_the_way(self.routes[selected_route_index])
         puts "Маршрут установлен!"
       else
         puts "Некорректный номер"
@@ -263,7 +263,7 @@ class TextInterface
         show_all_trains
         current_train_index = gets.to_i - 1
         break if current_train_index == -1
-        if train_index_existing_in_storage?(current_train_index)
+        if train_existing_in_storage?(current_train_index)
           self.selected_train = self.trains[current_train_index]
           puts "Поезд успешно выбран!"
           manage_action_with_cars_to_selected_train_interaction
@@ -331,7 +331,7 @@ class TextInterface
         show_all_trains
         current_train_index = gets.to_i - 1
         break if current_train_index == -1
-        if train_index_existing_in_storage?(current_train_index)
+        if train_existing_in_storage?(current_train_index)
           self.selected_train = self.trains[current_train_index]
           puts "Поезд успешно выбран!"
           manage_move_selected_train_interaction
@@ -449,7 +449,7 @@ class TextInterface
       show_all_stations
       station_index_number = gets.to_i - 1
       break if station_index_number == -1
-      if station_index_existing_in_storage?(station_index_number)
+      if station_existing_in_storage?(station_index_number)
         self.stations[station_index_number].show_all_trains
       else 
         puts "Некорректный номер"
@@ -465,7 +465,7 @@ class TextInterface
         show_all_trains
         train_index_number = gets.to_i - 1
         break if train_index_number == -1
-        if train_index_existing_in_storage?(train_index_number)
+        if train_existing_in_storage?(train_index_number)
           fill_target_car_interaction(train_index_number)
         else
           puts "Некорректный номер"
@@ -537,11 +537,11 @@ class TextInterface
     self.routes.each_with_index { |route, index| puts "#{index + 1})#{route.starting_station.name}-#{route.end_station.name}" }
   end
 
-  def station_index_existing_in_storage?(index)
+  def station_existing_in_storage?(index)
     !self.stations[index].nil?
   end
 
-  def route_index_existing_in_storage?(index)
+  def route_existing_in_storage?(index)
     !self.routes[index].nil?
   end
 
@@ -549,7 +549,7 @@ class TextInterface
     !self.routes[index].nil?
   end
 
-  def train_index_existing_in_storage?(index)
+  def train_existing_in_storage?(index)
     !self.trains[index].nil?
   end
 
