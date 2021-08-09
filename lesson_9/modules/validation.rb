@@ -45,7 +45,7 @@ module Validation
     def validate!
       self.class.validate_storage.each do |attr_name, actions|
         actions.each do |action|
-          action.call(ins_attr_value(attr_name))
+          action.call(self.send(:ins_attr_value, attr_name))
         end
       end
     end
@@ -57,6 +57,7 @@ module Validation
       false
     end
 
+    private
     def ins_attr_value(attr_name)
       self.instance_variable_get("@#{attr_name}")
     end
