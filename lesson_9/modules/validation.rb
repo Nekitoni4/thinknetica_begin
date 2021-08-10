@@ -26,7 +26,7 @@ module Validation
       self.class.validate_storage.each do |validate_action|
         validate_type, var, param = validate_action.values
         attr_value = send(:ins_attr_value, var)
-        param.nil? ? send(validate_type, attr_value) : send(validate_type, attr_value, param)
+        send(validate_type, attr_value, param)
       end
     end
 
@@ -39,7 +39,7 @@ module Validation
 
     private
 
-    def presence(attr_value)
+    def presence(attr_value, _)
       attr_value.nil? || attr_value.eql?('') ? raise('Передано nil значение или пустая строка у атрибута!') : true
     end
 
