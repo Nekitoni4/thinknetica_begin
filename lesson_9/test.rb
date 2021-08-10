@@ -7,7 +7,7 @@ class A
   strong_attr_accessor :a, String
 
   def initialize
-    @a = 1
+    @a = '1'
     @b = 2
     @c = 3
   end
@@ -23,11 +23,11 @@ class TestValidate
   def initialize
     @name = 123
     @format = 454
-    @type = "1234"
+    @type = 'asdf'
   end
 end
 
 a = A.new
-a.a = 1
+a.a = '123'
 test = TestValidate.new
 test.validate!

@@ -16,8 +16,8 @@ module Accessors
       @variables_history ||= {}
       args.each do |argv|
         get_argv argv
-        save_set_argv argv, self.variables_history
-        argv_history argv, self.variables_history
+        save_set_argv argv, variables_history
+        argv_history argv, variables_history
       end
     end
 
